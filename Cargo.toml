@@ -45,12 +45,15 @@ features = ["hardcoded-data"]
 [features]
 default = ["std", "swash", "fontconfig"]
 fontconfig = ["fontdb/fontconfig", "std"]
+# Memory-mapped font files. Needs `mmap`/`madvise`, so it is opt-in: `std` used to
+# pull it in unconditionally, which made the crate unbuildable on any target
+# without a POSIX mmap layer (ESP-IDF, bare metal, ...).
+fontdb-memmap = ["fontdb/memmap"]
 monospace_fallback = []
 no_std = ["hashbrown", "dep:libm", "skrifa/libm", "core_maths"]
 peniko = []
 shape-run-cache = []
 std = [
-    "fontdb/memmap",
     "fontdb/std",
     "harfrust/std",
     "linebender_resource_handle/std",
